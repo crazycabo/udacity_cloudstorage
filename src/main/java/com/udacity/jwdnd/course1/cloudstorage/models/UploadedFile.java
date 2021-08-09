@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.models;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Data;
  * Description:
  */
 @Data
+@Builder
 public class UploadedFile {
 
     private Integer fileId;

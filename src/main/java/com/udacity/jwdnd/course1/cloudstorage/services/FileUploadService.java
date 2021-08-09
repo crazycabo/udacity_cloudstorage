@@ -3,7 +3,9 @@ package com.udacity.jwdnd.course1.cloudstorage.services;
 import com.udacity.jwdnd.course1.cloudstorage.datasource.FileMapper;
 import com.udacity.jwdnd.course1.cloudstorage.models.UploadedFile;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,7 +15,7 @@ import java.util.List;
 @Service
 public class FileUploadService {
 
-    private FileMapper fileMapper;
+    private final FileMapper fileMapper;
 
     public FileUploadService(FileMapper fileMapper) {
         this.fileMapper = fileMapper;
@@ -23,11 +25,26 @@ public class FileUploadService {
         return this.fileMapper.getFilesByUserId(userId);
     }
 
-    // todo: get file by name
+    public UploadedFile getFileByName(String fileName, int userId) {
+        return this.fileMapper.getFileByName(fileName, userId);
+    }
 
-    // todo: upload file
+    public int uploadFile(MultipartFile file, int userId) throws IOException {
+        return this.fileMapper.uploadFileById(
+                UploadedFile.builder()
+                        .fileData(file.getBytes())
+                        .fileName(file.getOriginalFilename())
+                        .fileSize(file.getSize())
+                        .contentType(file.getContentType())
+                        .build()
+        );
+    }
 
-    // todo: delete file
+    public int deleteFile(int fileId) {
+        return this.fileMapper.deleteFileById(fileId);
+    }
 
-    // todo: check if file name present
+    public boolean fileNameExists(String fileName, int userId) {
+        return this.fileMapper.getFileByName(fileName, userId) == null;
+    }
 }
