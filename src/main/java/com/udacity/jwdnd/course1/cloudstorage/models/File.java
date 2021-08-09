@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class UploadedFile {
+public class File {
 
     private Integer fileId;
     private String fileName;
