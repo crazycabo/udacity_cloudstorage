@@ -30,7 +30,7 @@ public class FileService {
     }
 
     public int uploadFile(MultipartFile file, int userId) throws IOException {
-        return this.fileMapper.uploadFileById(
+        return this.fileMapper.uploadFile(
                 File.builder()
                         .fileData(file.getBytes())
                         .fileName(file.getOriginalFilename())
