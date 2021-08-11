@@ -13,6 +13,9 @@
             <div id="success-msg" th:if="${signupSuccess}" class="alert alert-success">
                 Account creation successful. Please log in!
             </div>
+            <div id="failure-msg" th:if="${signupError}" class="alert alert-danger">
+                Account creation failed! <span th:text="${signupError}"></span>
+            </div>
             <div id="logout-msg" th:if="${param.logout}" class="alert alert-warning">
                 You are now logged out!
             </div>
