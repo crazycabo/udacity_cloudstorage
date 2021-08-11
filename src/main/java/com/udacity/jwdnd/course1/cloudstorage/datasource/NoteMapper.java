@@ -13,7 +13,7 @@ import java.util.List;
 public interface NoteMapper {
 
     @Select("Select * from NOTES where userid = #{userId} and noteTitle = #{noteTitle}")
-    Note getFileByName(String noteTitle, int userId);
+    Note getNoteByName(String noteTitle, int userId);
 
     @Select("Select * from NOTES where userid = #{userId}")
     List<Note> getNotesByUserId(int userid);
