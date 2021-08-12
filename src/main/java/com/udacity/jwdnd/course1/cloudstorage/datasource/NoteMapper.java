@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -16,13 +17,16 @@ public interface NoteMapper {
     Note getNoteByName(String noteTitle, int userId);
 
     @Select("Select * from NOTES where userid = #{userId}")
-    List<Note> getNotesByUserId(int userid);
+    List<Note> getNotesByUserId(int userId);
 
-    @Insert("Insert into NOTES (noteTile, noteDescription, userid) " +
-            "VALUES (#{noteTile}, #{noteDescription}, #{userid})")
+    @Insert("Insert into NOTES (noteTitle, noteDescription, userid) " +
+            "VALUES (#{title}, #{description}, #{userId})")
     @Options(useGeneratedKeys = true, keyProperty = "noteId")
+    int saveNote(Note note);
+
+    @Update("Update NOTES set noteTitle=#{title}, noteDescription=#{description} where noteid=#{noteId}")
     int updateNote(Note note);
 
-    @Delete("Delete from NOTE where noteId = #{noteId}")
+    @Delete("Delete from NOTES where noteId = #{noteId}")
     int deleteNoteById(int noteId);
 }
