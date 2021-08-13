@@ -1,6 +1,5 @@
-package com.udacity.jwdnd.course1.cloudstorage.models;
+package com.udacity.jwdnd.course1.cloudstorage.dtos;
 
-import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -8,13 +7,10 @@ import lombok.Data;
  * Description:
  */
 @Data
-@Builder
-public class Credentials {
+public class CredentialDTO {
 
     private Integer credentialId;
     private String url;
     private String username;
     private String password;
-    private String key;
-    private Integer userId;
 }
