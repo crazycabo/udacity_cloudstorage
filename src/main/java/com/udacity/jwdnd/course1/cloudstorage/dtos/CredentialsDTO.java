@@ -7,7 +7,7 @@ import lombok.Data;
  * Description:
  */
 @Data
-public class CredentialDTO {
+public class CredentialsDTO {
 
     private Integer credentialId;
     private String url;

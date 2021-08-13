@@ -9,7 +9,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class Credential {
+public class Credentials {
 
     private Integer credentialId;
     private String url;
