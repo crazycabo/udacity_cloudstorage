@@ -38,17 +38,13 @@ public class CredentialController {
     }
 
     @GetMapping("/{credentialId}")
-    public String getCredential(@PathVariable("credentialId") int credentialId, Model model, Authentication authentication) {
-        try {
-            Credential credential = this.credentialService.getCredentialById(credentialId);
-            String encryptedPassword = this.encryptionService.decryptValue(credential.getPassword(), credential.getKey());
+    public Credential getCredential(@PathVariable("credentialId") int credentialId, Model model, Authentication authentication) {
+        Credential credential = this.credentialService.getCredentialById(credentialId);
 
-            model.addAttribute("updateSuccess", true);
-        } catch(Exception e) {
-            model.addAttribute("updateFail", "Encrypted password could not be retrieved.");
-        }
+        String decryptedPassword = this.encryptionService.decryptValue(credential.getPassword(), credential.getKey());
+        credential.setPassword(decryptedPassword);
 
-        return "result";
+        return credential;
     }
 
     @PostMapping("/create")
