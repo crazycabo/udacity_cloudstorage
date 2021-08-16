@@ -50,8 +50,15 @@ public class AuthenticationTests {
         signUpView.createAccount("Brian", "Smith", "bsmith", "1234");
 
         logInView.logIn("bsmith", "1234");
-
         homeView.buttonLogOut.click();
+
         assertTrue(webDriver.findElement(By.id("logout-msg")).isDisplayed());
+    }
+
+    @Test
+    public void verifyOnlyAuthenticatedUsersCanAccessContent() {
+        homeView.navigateToPage();
+
+        assertTrue(logInView.buttonSubmitLogIn.isDisplayed());
     }
 }
