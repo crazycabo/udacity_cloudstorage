@@ -23,8 +23,11 @@ public class CredentialsTabbedView {
     @FindBy(id = "credential-password")
     public WebElement inputCredentialPassword;
 
-    @FindBy(xpath = "//button[contains(text(), 'Save changes')]")
+    @FindBy(xpath = "//div[@id='credentialModal']/div/div/div/button[contains(text(), 'Save changes')]")
     public WebElement buttonSaveChanges;
+
+    @FindBy(xpath = "//div[@id='credentialModal']/div/div/div/button[contains(text(), 'Close')]")
+    public WebElement buttonCloseModal;
 
     private final WebDriver driver;
     private final WebDriverWait webDriverWait;
@@ -50,6 +53,20 @@ public class CredentialsTabbedView {
                 .build();
     }
 
+    public String getDecryptedPassword(int rowNum) {
+        WebElement editButton = driver.findElement(By.xpath("//tr[" + rowNum + "]/td/button[contains(text(), 'Edit')]"));
+        webDriverWait.until(ExpectedConditions.elementToBeClickable(editButton));
+
+        editButton.click();
+        webDriverWait.until(ExpectedConditions.elementToBeClickable(inputCredentialUrl));
+
+        String pw = inputCredentialPassword.getAttribute("value");
+
+        buttonCloseModal.click();
+
+        return pw;
+    }
+
     public void createCredential(String url, String username, String password) {
         webDriverWait.until(ExpectedConditions.elementToBeClickable(buttonAddNewCredential));
         buttonAddNewCredential.click();
@@ -70,7 +87,6 @@ public class CredentialsTabbedView {
         webDriverWait.until(ExpectedConditions.elementToBeClickable(editButton));
 
         editButton.click();
-
         webDriverWait.until(ExpectedConditions.elementToBeClickable(inputCredentialUrl));
 
         inputCredentialUrl.clear();
