@@ -10,12 +10,14 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class NotesTests {
@@ -57,7 +59,7 @@ public class NotesTests {
     }
 
     @Test
-    public void createNoteEditAndVerifyContent() {
+    public void createEditDeleteNoteAndVerifyContent() {
         homeView.tabNotes.click();
         notesTabbedView.createNote("Alarm", "This could be a problem");
 
@@ -67,7 +69,6 @@ public class NotesTests {
         assertEquals("Alarm | This could be a problem", note.getTitle() + " | " + note.getDescription(),
                 "New note details are not correct");
 
-        homeView.tabNotes.click();
         notesTabbedView.editNote(1, "Cleared", "Everything is fine now");
 
         homeView.tabNotes.click();
@@ -75,10 +76,10 @@ public class NotesTests {
 
         assertEquals("Cleared | Everything is fine now", editedNote.getTitle() + " | " + editedNote.getDescription(),
                 "Edited note details are not correct");
-    }
 
-    @Test
-    public void deleteNote() {
-        
+        notesTabbedView.deleteNote(1);
+        assertThrows(TimeoutException.class, () -> {
+            notesTabbedView.getNoteDetails(1);
+        }, "Note should not display");
     }
 }

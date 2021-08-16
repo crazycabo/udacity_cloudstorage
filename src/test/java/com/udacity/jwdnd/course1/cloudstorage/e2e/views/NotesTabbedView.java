@@ -29,7 +29,7 @@ public class NotesTabbedView {
 
     public NotesTabbedView(WebDriver driver, String baseUrl) {
         this.driver = driver;
-        this.webDriverWait = new WebDriverWait(driver, 10);
+        this.webDriverWait = new WebDriverWait(driver, 3);
         this.baseUrl = baseUrl;
 
         PageFactory.initElements(driver, this);
@@ -80,7 +80,7 @@ public class NotesTabbedView {
     }
 
     public void deleteNote(int rowNum) {
-        WebElement deleteButton = driver.findElement(By.xpath("//tr[" + rowNum + "]/td/button[contains(text(), ' Delete ')]"));
+        WebElement deleteButton = driver.findElement(By.xpath("//tr[" + rowNum + "]/td/a[contains(text(), 'Delete')]"));
         webDriverWait.until(ExpectedConditions.elementToBeClickable(deleteButton));
 
         deleteButton.click();
