@@ -57,13 +57,28 @@ public class NotesTests {
     }
 
     @Test
-    public void createNoteAndVerifyContent() {
+    public void createNoteEditAndVerifyContent() {
         homeView.tabNotes.click();
-        notesTabbedView.createNote("Todo List", "Lots of things I need to do");
+        notesTabbedView.createNote("Alarm", "This could be a problem");
 
         homeView.tabNotes.click();
         Note note = notesTabbedView.getNoteDetails(1);
 
-        assertEquals("Todo List | Lots of things I need to do", note.getTitle() + " | " + note.getDescription());
+        assertEquals("Alarm | This could be a problem", note.getTitle() + " | " + note.getDescription(),
+                "New note details are not correct");
+
+        homeView.tabNotes.click();
+        notesTabbedView.editNote(1, "Cleared", "Everything is fine now");
+
+        homeView.tabNotes.click();
+        Note editedNote = notesTabbedView.getNoteDetails(1);
+
+        assertEquals("Cleared | Everything is fine now", editedNote.getTitle() + " | " + editedNote.getDescription(),
+                "Edited note details are not correct");
+    }
+
+    @Test
+    public void deleteNote() {
+        
     }
 }

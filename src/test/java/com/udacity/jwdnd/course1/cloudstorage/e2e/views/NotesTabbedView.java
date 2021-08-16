@@ -52,6 +52,7 @@ public class NotesTabbedView {
         buttonAddNewNote.click();
 
         webDriverWait.until(ExpectedConditions.elementToBeClickable(inputNoteTitle));
+
         inputNoteTitle.sendKeys(title);
         inputNoteDescription.sendKeys(description);
 
@@ -61,12 +62,16 @@ public class NotesTabbedView {
     }
 
     public void editNote(int rowNum, String title, String description) {
-        WebElement editButton = driver.findElement(By.xpath("//tr[" + rowNum + "]/td/button[contains(text(), ' Edit ')]"));
+        WebElement editButton = driver.findElement(By.xpath("//tr[" + rowNum + "]/td/button[contains(text(), 'Edit')]"));
         webDriverWait.until(ExpectedConditions.elementToBeClickable(editButton));
 
         editButton.click();
 
+        webDriverWait.until(ExpectedConditions.elementToBeClickable(inputNoteTitle));
+
+        inputNoteTitle.clear();
         inputNoteTitle.sendKeys(title);
+        inputNoteDescription.clear();
         inputNoteDescription.sendKeys(description);
 
         buttonSaveChanges.click();
