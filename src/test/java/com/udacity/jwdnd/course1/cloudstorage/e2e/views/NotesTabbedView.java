@@ -25,12 +25,10 @@ public class NotesTabbedView {
 
     private final WebDriver driver;
     private final WebDriverWait webDriverWait;
-    private final String baseUrl;
 
-    public NotesTabbedView(WebDriver driver, String baseUrl) {
+    public NotesTabbedView(WebDriver driver) {
         this.driver = driver;
         this.webDriverWait = new WebDriverWait(driver, 3);
-        this.baseUrl = baseUrl;
 
         PageFactory.initElements(driver, this);
     }

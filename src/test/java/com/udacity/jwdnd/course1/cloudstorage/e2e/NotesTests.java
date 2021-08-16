@@ -26,8 +26,6 @@ public class NotesTests {
     private int port;
 
     private WebDriver webDriver;
-    private LogInView logInView;
-    private SignUpView signUpView;
     private HomeView homeView;
     private NotesTabbedView notesTabbedView;
 
@@ -39,10 +37,10 @@ public class NotesTests {
         webDriver = new ChromeDriver();
         webDriver.get(url);
 
-        logInView = new LogInView(webDriver, url);
-        signUpView = new SignUpView(webDriver, url);
+        LogInView logInView = new LogInView(webDriver, url);
+        SignUpView signUpView = new SignUpView(webDriver, url);
         homeView = new HomeView(webDriver, url);
-        notesTabbedView = new NotesTabbedView(webDriver, url);
+        notesTabbedView = new NotesTabbedView(webDriver);
 
         signUpView.navigateToPage();
 
