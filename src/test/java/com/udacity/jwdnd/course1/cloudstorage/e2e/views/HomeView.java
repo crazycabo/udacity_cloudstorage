@@ -12,12 +12,18 @@ public class HomeView {
     @FindBy(xpath = "//button[contains(text(), 'Logout')]")
     public WebElement buttonLogOut;
 
+    @FindBy(xpath = "//a[contains(text(), 'Notes')]")
+    public WebElement tabNotes;
+
+    @FindBy(xpath = "//a[contains(text(), 'Credentials')]")
+    public WebElement tabCredentials;
+
     private final WebDriver driver;
     private final WebDriverWait webDriverWait;
     private final String baseUrl;
 
-    public HomeView(WebDriver driver, String baseUrl)
-    {   this.driver = driver;
+    public HomeView(WebDriver driver, String baseUrl) {
+        this.driver = driver;
         this.webDriverWait = new WebDriverWait(driver, 10);
         this.baseUrl = baseUrl;
 
