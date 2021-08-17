@@ -52,7 +52,6 @@ public class FileController implements HandlerExceptionResolver {
 
         if (exc instanceof MaxUploadSizeExceededException) {
             modelAndView.getModel().put("updateFail", "File size exceed limit of 5Mb.");
-
         }
 
         return modelAndView;
