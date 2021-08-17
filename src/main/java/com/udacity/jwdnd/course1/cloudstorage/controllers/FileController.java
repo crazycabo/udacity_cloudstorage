@@ -16,8 +16,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -26,7 +31,7 @@ import java.io.IOException;
  */
 @Controller()
 @RequestMapping("/files")
-public class FileController {
+public class FileController implements HandlerExceptionResolver {
 
     private final FileService fileUploadService;
     private final UserService userService;
@@ -34,6 +39,22 @@ public class FileController {
     public FileController(FileService fileUploadService, UserService userService) {
         this.fileUploadService = fileUploadService;
         this.userService = userService;
+    }
+
+    @Override
+    public ModelAndView resolveException(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Object object,
+            Exception exc) {
+
+        ModelAndView modelAndView = new ModelAndView("result");
+
+        if (exc instanceof MaxUploadSizeExceededException) {
+            modelAndView.getModel().put("updateFail", "File size exceed limit of 5Mb.");
+        }
+
+        return modelAndView;
     }
 
     @ModelAttribute("fileDTO")
@@ -56,7 +77,7 @@ public class FileController {
     }
 
     @PostMapping
-    public String uploadFile(Authentication authentication, Model model, @ModelAttribute("fileDTO") MultipartFile file) {
+    public String uploadFile(Authentication authentication, Model model, @ModelAttribute("fileDTO") MultipartFile file) throws IOException {
         User user = this.userService.getUser(authentication.getName());
 
         if (file.isEmpty()) {
@@ -66,11 +87,6 @@ public class FileController {
 
         if (this.fileUploadService.fileNameExists(file.getOriginalFilename(), user.getUserId())) {
             model.addAttribute("updateFail", "File name already exists.");
-            return "result";
-        }
-
-        if (file.getSize() > 1024 * 500) {
-            model.addAttribute("updateFail", "File size exceed limit of 500Kb");
             return "result";
         }
 
