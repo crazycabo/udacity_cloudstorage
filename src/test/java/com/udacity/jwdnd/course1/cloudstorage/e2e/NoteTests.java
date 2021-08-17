@@ -16,6 +16,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -56,28 +57,46 @@ public class NoteTests {
         webDriver.quit();
     }
 
-    @Test
-    public void createEditDeleteNoteAndVerifyContent() {
+    private Note createNote() {
         homeView.tabNotes.click();
         notesTabbedView.createNote("Alarm", "This could be a problem");
 
         homeView.tabNotes.click();
-        Note note = notesTabbedView.getNoteDetails(1);
+        return notesTabbedView.getNoteDetails(1);
+    }
 
-        assertEquals("Alarm | This could be a problem", note.getTitle() + " | " + note.getDescription(),
-                "New note details are not correct");
+    @Test
+    public void createNoteAndVerifyContent() {
+        Note note = createNote();
+
+        assertAll(
+                () -> assertEquals("Alarm", note.getTitle()),
+                () -> assertEquals("This could be a problem", note.getDescription())
+        );
+    }
+
+    @Test
+    public void editNoteAndVerifyContent() {
+        createNote();
 
         notesTabbedView.editNote(1, "Cleared", "Everything is fine now");
 
         homeView.tabNotes.click();
         Note editedNote = notesTabbedView.getNoteDetails(1);
 
-        assertEquals("Cleared | Everything is fine now", editedNote.getTitle() + " | " + editedNote.getDescription(),
-                "Edited note details are not correct");
+        assertAll(
+                () -> assertEquals("Cleared", editedNote.getTitle()),
+                () -> assertEquals("Everything is fine now", editedNote.getDescription())
+        );
+    }
+
+    @Test
+    public void deleteNote() {
+        createNote();
 
         notesTabbedView.deleteNote(1);
         assertThrows(TimeoutException.class, () -> {
             notesTabbedView.getNoteDetails(1);
-        }, "Note should not display");
+        },"Note should not display");
     }
 }

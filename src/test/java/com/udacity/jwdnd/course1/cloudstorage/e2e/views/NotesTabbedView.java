@@ -20,7 +20,7 @@ public class NotesTabbedView {
     @FindBy(id = "note-description")
     public WebElement inputNoteDescription;
 
-    @FindBy(xpath = "//button[contains(text(), 'Save changes')]")
+    @FindBy(xpath = "//div[@id='noteModal']/div/div/div/button[contains(text(), 'Save changes')]")
     public WebElement buttonSaveChanges;
 
     private final WebDriver driver;
